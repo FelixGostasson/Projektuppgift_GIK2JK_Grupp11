@@ -1,22 +1,29 @@
-# Biluthyrning – utkast för Visual Studio 2022
+# Biluthyrning för Visual Studio 2022
 
-Öppna `BiluthyrningVS2022.sln` i Visual Studio 2022 med stöd för .NET 8 och kör med Ctrl+F5.
+Konsolprojekt i C#/.NET 8 för biluthyrningsscenariot. Fyra fordonstyper, sökning med typfilter, bokning, tillägg, avbokning, uthämtning och återlämning. Priset sparas vid bokning och överlappande bokningar avvisas.
 
-Alternativt: `dotnet run --project BiluthyrningVS2022/BiluthyrningVS2022.csproj` från denna mapp.
+## Starta
 
-## Funktioner
+Öppna `BiluthyrningVS2022.sln` i Visual Studio 2022 med .NET 8-stöd. Välj BiluthyrningVS2022 som startprojekt och tryck Ctrl+F5. Lösningen innehåller även en separat testkörare.
 
-- Sök lediga fordon för en period, sorterade efter dygnspris.
-- Boka ett fordon med kunduppgifter och valfri barnstol (50 kr/dygn).
-- Visa bokningar och avboka via boknings-ID.
-- Stoppa överlappande bokningar och hantera ogiltig inmatning.
+Från den här mappen:
 
-## Avgränsningar och antaganden
+```text
+dotnet build BiluthyrningVS2022.sln --configuration Release
+dotnet run --project BiluthyrningVS2022
+dotnet run --project BiluthyrningVS2022 -- --demo
+dotnet run --project Biluthyrning.Tests --configuration Release
+```
 
-Data lagras i minnet och försvinner när programmet avslutas. Slutdatum är exklusivt: 10–13 november är tre dygn, och nästa bokning kan börja den 13 november. Utkastet är avsett för en enkeltrådad konsolapp.
+Datum anges som yyyy-MM-dd. Slutdatum är exklusivt: 10–13 november är tre dygn. Data finns endast i minnet och programmet stöder en användare åt gången. Välj j eller n för tilläggen. Boknings-ID visas när bokningen skapas och används vid statusändringar.
 
-Prisberäkningen använder Strategy via `IPrisstrategi`. Utkastet är inte en komplett inlämning; bland annat återstår uppdelning i separata klassfiler, fler tester, ytterligare designmönster och dokumentation/UML som motsvarar koden.
+## Underlag
 
-## Kontrollerat
+- [Krav, User Stories och Use Cases](docs/krav.md)
+- [Domänmodell, APIE, SOLID, GRASP, mönster och algoritmer](docs/design.md)
+- [Use Case-diagram i UML/PlantUML](docs/use-cases.puml)
+- [Klassdiagram i UML/PlantUML](docs/klassdiagram.puml)
+- [Test- och redovisningsinstruktioner](docs/redovisning.md)
+- [Spårning mot issues](docs/issues.md)
 
-Projektet byggdes i Visual Studio 2022. Bokning med barnstol, avvisad dubbelbokning, tillgänglighet vid periodgräns och ogiltigt menyval kontrollerades.
+PlantUML-filerna är redigerbara diagramkällor. Rendera dem med PlantUML före slutlig presentation. Gruppen behöver granska antaganden och UML samt komplettera med PowerPoint/PDF, egen reflektion och bekräftad åtkomst till repo/Projects för grupp och lärare. Underlaget är ingen garanti för ett visst betyg.
