@@ -1,0 +1,71 @@
+@startuml
+skinparam classAttributeIconSize 0
+abstract class Fordon {
+  +Registreringsnummer : string
+  +Modell : string
+  +PrisPerDygn : decimal
+  {abstract} +Typ : string
+}
+class Kompaktbil
+class Kombi
+class Elbil
+class Skapbil
+Fordon <|-- Kompaktbil
+Fordon <|-- Kombi
+Fordon <|-- Elbil
+Fordon <|-- Skapbil
+class Kund { +Id : string
++Namn : string }
+class Hyrperiod { +Start : DateOnly
++Slut : DateOnly
++AntalDygn : int
++Overlappar(annan) : bool }
+class Tillagg { +Namn : string
++PrisPerDygn : decimal }
+enum Bokningsstatus { Bokad
+Uthamtad
+Aterlamnad
+Avbokad }
+class Bokning { +Id : Guid
++Totalpris : decimal
++Status : Bokningsstatus
+~Avboka()
+~HamtaUt()
+~Aterlamna() }
+Bokning "0..*" --> "1" Kund
+Bokning "0..*" --> "1" Fordon
+Bokning "0..*" --> "1" Hyrperiod
+Bokning "0..*" --> "0..*" Tillagg
+Bokning --> Bokningsstatus
+class Bokningsmotor { +LaggTill(fordon)
++SokLediga(period, typ)
++Boka(kund, reg, period, tillagg)
++Avboka(id)
++HamtaUt(id)
++Aterlamna(id) }
+Bokningsmotor "1" o-- "0..*" Fordon
+Bokningsmotor "1" *-- "0..*" Bokning
+interface IPrisstrategi { +Berakna(fordon, period) : decimal }
+class Dygnspris
+class Veckorabatt
+class Tillaggspris
+IPrisstrategi <|.. Dygnspris
+IPrisstrategi <|.. Veckorabatt
+IPrisstrategi <|.. Tillaggspris
+Tillaggspris --> "1" IPrisstrategi : inre
+Tillaggspris --> "1" Tillagg
+Bokningsmotor --> "1" IPrisstrategi
+abstract class Fordonsfabrik { +Skapa(reg, modell, pris) : Fordon
+{abstract} #SkapaFordon(reg, modell, pris) : Fordon }
+class Kompaktfabrik
+class Kombifabrik
+class Elbilsfabrik
+class Skapbilsfabrik
+Fordonsfabrik <|-- Kompaktfabrik
+Fordonsfabrik <|-- Kombifabrik
+Fordonsfabrik <|-- Elbilsfabrik
+Fordonsfabrik <|-- Skapbilsfabrik
+Fordonsfabrik ..> Fordon : skapar
+class Fordonssortering { {static} +Sortera(fordon) : List<Fordon> }
+Bokningsmotor ..> Fordonssortering
+@enduml

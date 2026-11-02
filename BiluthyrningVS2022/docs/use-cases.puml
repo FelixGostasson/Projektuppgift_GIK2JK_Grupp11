@@ -1,0 +1,24 @@
+@startuml
+left to right direction
+actor Kund
+actor Personal
+rectangle "Biluthyrning (konsol)" {
+  usecase "Sök lediga fordon" as S
+  usecase "Boka fordon" as B
+  usecase "Avboka" as A
+  usecase "Visa bokningar" as V
+  usecase "Hämta ut" as H
+  usecase "Återlämna" as R
+  usecase "Kontrollera tillgänglighet" as K
+  usecase "Beräkna pris" as P
+}
+Kund --> S
+Kund --> B
+Kund --> A
+Personal --> V
+Personal --> H
+Personal --> R
+S ..> K : <<include>>
+B ..> K : <<include>>
+B ..> P : <<include>>
+@enduml
